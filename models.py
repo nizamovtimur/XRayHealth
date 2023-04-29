@@ -1,9 +1,10 @@
 import bson
-from flask import current_app
-from flask_pymongo import PyMongo
-from werkzeug.security import generate_password_hash, check_password_hash
 
-db = PyMongo(current_app).db
+from config import Config
+
+from pymongo import MongoClient
+from werkzeug.security import generate_password_hash, check_password_hash
+db = MongoClient(Config().MONGO_URI).xrayhealth
 
 
 class Analysis:
@@ -105,7 +106,7 @@ class User:
         return user
 
     def delete(self, user_id):
-        Analyze().delete_by_user_id(user_id)
+        Analysis().delete_by_user_id(user_id)
         user = db.users.delete_one({"_id": bson.ObjectId(user_id)})
         user = self.get_by_id(user_id)
         return user

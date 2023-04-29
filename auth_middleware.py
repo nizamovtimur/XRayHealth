@@ -3,6 +3,7 @@ import jwt
 from flask import request, abort, current_app
 import models
 
+
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):

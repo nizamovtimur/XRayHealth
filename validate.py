@@ -1,5 +1,4 @@
 import re
-from bson.objectid import ObjectId
 
 
 def validate(data, regex):
@@ -7,13 +6,11 @@ def validate(data, regex):
 
 
 def validate_password(password: str):
-    reg = r"\b^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,20}$\b"
-    return validate(password, reg)
+    return validate(password, r'[A-Za-z0-9@#$%^&+=]{8,}')
 
 
 def validate_email(email: str):
-    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
-    return validate(email, regex)
+    return validate(email, r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
 
 
 def validate_analyze(**args):
@@ -53,12 +50,7 @@ def validate_user(**args):
         }
     if not validate_password(args.get('password')):
         return {
-            'password': 'Password is invalid, Should be atleast 8 characters with \
-                upper and lower case letters, numbers and special characters'
-        }
-    if not 2 <= len(args['name'].split(' ')) <= 30:
-        return {
-            'name': 'Name must be between 2 and 30 words'
+            'password': 'Password is invalid, should be at least 8 characters'
         }
     return True
 
@@ -75,7 +67,6 @@ def validate_email_and_password(email, password):
         }
     if not validate_password(password):
         return {
-            'password': 'Password is invalid, Should be atleast 8 characters with \
-                upper and lower case letters, numbers and special characters'
+            'password': 'Password is invalid, should be at least 8 characters'
         }
     return True
