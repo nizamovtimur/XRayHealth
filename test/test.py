@@ -17,25 +17,25 @@ def register(email: str, password: str):
     return requests.post("http://localhost:5000/auth/register",
                          json={"email": email,
                                "password": password,
-                               "name": "abc"})
+                               "name": "abc"}).content
 
 
 def login(email: str, password: str):
     return requests.post("http://localhost:5000/auth/login",
                          json={"email": email,
-                               "password": password})
+                               "password": password}).content
 
 
 def get_analyzes(token: str):
     return requests.get("http://localhost:5000/analyzes",
-                        headers={"Authorization": "Bearer " + token})
+                        headers={"Authorization": "Bearer " + token}).content
 
 
 def get_analysis_by_id(token: str, analysis_id: str):
     return requests.get(f"http://localhost:5000/analyzes/{analysis_id}",
-                        headers={"Authorization": "Bearer " + token})
+                        headers={"Authorization": "Bearer " + token}).content
 
 
 def delete_analysis_by_id(token: str, analysis_id: str):
     return requests.delete(f"http://localhost:5000/analyzes/{analysis_id}",
-                           headers={"Authorization": "Bearer " + token})
+                           headers={"Authorization": "Bearer " + token}).content
