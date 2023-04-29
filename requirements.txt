@@ -1,3 +1,12 @@
+click
 Flask
-flask_pymongo
+Flask-PyMongo
+itsdangerous
+Jinja2
+MarkupSafe
+Pillow
+PyJWT
+pymongo
+python-dotenv
+Werkzeug
 torchvision
