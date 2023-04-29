@@ -19,9 +19,15 @@ model = ResNet(ResidualBlock, [3, 4, 6, 3])
 model.load_state_dict(torch.load("neuralnet/weights.pth", map_location=torch.device("cpu")))
 
 
-@app.route("/api/predict", methods=["POST"])  # создание анализа с предсказанием через api с проверкой токена
+@app.route("/", methods=["GET"])  # список всех анализов всех пользователей
 @token_required
-def api_predict(current_user):
+def index():
+    pass
+
+
+@app.route("/analyzes/predict", methods=["POST"])  # создание анализа с предсказанием через api с проверкой токена
+@token_required
+def predict(current_user):
     try:
         analysis = dict(request.form)
         if not analysis:
@@ -59,28 +65,20 @@ def api_predict(current_user):
         }), 201
     except Exception as e:
         return jsonify({
-            "message": "failed to create a new book",
+            "message": "failed to create a new analysis",
             "error": str(e),
             "data": None
         }), 500
 
 
-@app.route("/", methods=["GET"])  # список всех анализов или редирект на /login
-def index():
-    pass
-
-
 @app.route("/analyzes/<analysis_id>", methods=["GET", "DELETE"])  # страница просмотра анализа GET и его удаления DELETE
+@token_required
 def get_analysis(analysis_id):
     pass
 
 
-@app.route("/analyzes/predict", methods=["POST"])  # создание анализа с предсказанием через форму для авторизованных
-def predict():
-    pass
-
-
-@app.route("/personal", methods=["GET", "POST"])  # страница личного кабинета пользователя с получением токена доступа
+@app.route("/api", methods=["GET"])  # страница описания подключения аппаратного комплекса с токеном доступа
+@token_required
 def personal():
     pass
 
