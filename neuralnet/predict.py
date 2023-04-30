@@ -8,8 +8,9 @@ classes = ("NORMAL", "PNEUMONIA")
 def transform_image(image_bytes):
     transform = transforms.Compose(
         [transforms.Resize((512, 512)),
+         transforms.Grayscale(),
          transforms.ToTensor(),
-         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+         transforms.Normalize(0.5, 0.5)])
     image = Image.open(io.BytesIO(image_bytes))
     return transform(image).unsqueeze(0)
 

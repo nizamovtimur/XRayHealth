@@ -2,7 +2,7 @@ from datetime import datetime
 from base64 import b64encode
 
 from config import Config
-from neuralnet.resnet import ResidualBlock, ResNet
+from neuralnet.basenet import BaseNet
 from neuralnet.predict import get_prediction
 
 import jwt
@@ -16,8 +16,8 @@ from validate import validate_analyze, validate_email_and_password, validate_use
 app = Flask(__name__)
 app.config.from_object(Config)
 
-resnet = ResNet(ResidualBlock, [3, 4, 6, 3])
-resnet.load_state_dict(torch.load("neuralnet/weights.pth", map_location=torch.device("cpu")))
+basenet = BaseNet()
+basenet.load_state_dict(torch.load("neuralnet/weights.pth", map_location=torch.device("cpu")))
 
 
 @app.route("/", methods=["GET"])  # заглавная страница проекта с сочной кнопкой перехода к анализам
@@ -74,7 +74,7 @@ def predict(current_user):
                 "error": is_validated
             }, 400
         analysis["user_id"] = current_user["_id"]
-        analysis["prediction"] = get_prediction(image_bytes=analysis["image_bytes"], model=resnet)
+        analysis["prediction"] = get_prediction(image_bytes=analysis["image_bytes"], model=basenet)
         analysis["date"] = datetime.now()
         analysis["image_bytes"] = b64encode(analysis["image_bytes"]).decode("utf-8")
         analysis = Analysis().create(**analysis)
