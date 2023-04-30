@@ -4,7 +4,7 @@ import requests
 from timeit import default_timer as timer
 
 
-def predict(file_path: str, token: str):
+def predict(token: str, file_path: str):
     start = timer()
     resp_normal = requests.post("http://localhost:5000/analyzes/predict",
                                 data={"patient_id": "1"},
