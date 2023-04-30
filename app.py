@@ -94,7 +94,8 @@ def predict(current_user):
 
 @app.route("/analyzes/<analysis_id>", methods=["GET", "DELETE"])  # страница просмотра анализа GET и его удаления DELETE
 @token_required
-def get_analysis(analysis_id, current_user):
+def get_analysis(current_user, analysis_id=""):
+    print(analysis_id)
     if request.method == "GET":
         try:
             analysis = Analysis().get_by_id(analysis_id)
@@ -124,8 +125,7 @@ def get_analysis(analysis_id, current_user):
                     "error": "Not Found"
                 }, 404
             return jsonify({
-                "message": "successfully deleted an analysis",
-                "data": analysis
+                "message": "successfully deleted an analysis"
             })
         except Exception as e:
             return jsonify({
