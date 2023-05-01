@@ -3,10 +3,12 @@
 import requests
 from timeit import default_timer as timer
 
+host = "http://localhost:5000"
+
 
 def predict(token: str, file_path: str):
     start = timer()
-    resp_normal = requests.post("http://localhost:5000/analyzes/predict",
+    resp_normal = requests.post(host + "/analyzes/predict",
                                 data={"patient_id": "1"},
                                 files={"image": open(file_path, 'rb')},
                                 headers={"Authorization": "Bearer " + token})
@@ -14,28 +16,28 @@ def predict(token: str, file_path: str):
 
 
 def register(email: str, password: str):
-    return requests.post("http://localhost:5000/auth/register",
+    return requests.post(host + "/auth/register",
                          json={"email": email,
                                "password": password,
                                "name": "abc"}).json()
 
 
 def login(email: str, password: str):
-    return requests.post("http://localhost:5000/auth/login",
+    return requests.post(host + "/auth/login",
                          json={"email": email,
                                "password": password}).json()
 
 
 def get_analyzes(token: str):
-    return requests.get("http://localhost:5000/analyzes",
+    return requests.get(host + "/analyzes",
                         headers={"Authorization": "Bearer " + token}).json()
 
 
 def get_analysis_by_id(token: str, analysis_id: str):
-    return requests.get(f"http://localhost:5000/analyzes/{analysis_id}",
+    return requests.get(host + f"/analyzes/{analysis_id}",
                         headers={"Authorization": "Bearer " + token}).json()
 
 
 def delete_analysis_by_id(token: str, analysis_id: str):
-    return requests.delete(f"http://localhost:5000/analyzes/{analysis_id}",
+    return requests.delete(host + f"/analyzes/{analysis_id}",
                            headers={"Authorization": "Bearer " + token}).json()
