@@ -7,7 +7,8 @@ from neuralnet.predict import get_prediction
 
 import jwt
 import torch
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
+from flask_cors import CORS
 
 from auth_middleware import token_required
 from models import Analysis, User
@@ -16,13 +17,18 @@ from validate import validate_analyze, validate_email_and_password, validate_use
 app = Flask(__name__)
 app.config.from_object(Config)
 
+CORS(app, resources={r'/*': {'origins': '*'}})
+
 basenet = BaseNet()
 basenet.load_state_dict(torch.load("neuralnet/weights.pth", map_location=torch.device("cpu")))
 
 
 @app.route("/", methods=["GET"])  # заглавная страница проекта с сочной кнопкой перехода к анализам
 def index():
-    pass
+    return jsonify({
+        "message": "Hello world",
+        "data": "pong"
+    }), 200
 
 
 @app.route("/api", methods=["GET"])  # страница описания подключения аппаратного комплекса с токеном доступа
