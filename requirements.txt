@@ -5,3 +5,4 @@ pymongo
 python-dotenv
 torchvision
 Werkzeug
+flask-cors

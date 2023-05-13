@@ -45,6 +45,14 @@ cp .env.example .env
 python app.py 
 ```
 
+Затем необходимо выполнить следующее:
+
+```shell
+cd xrayhealth
+npm install
+npm run dev
+```
+
 ## Авторы
 * [Тимур Низамов](https://github.com/nizamovtimur)
 * [Дмитрий Шушарин](https://github.com/Dima2002iq)
