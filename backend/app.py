@@ -20,7 +20,7 @@ app.config.from_object(Config)
 CORS(app, resources={r'/*': {'origins': '*'}})
 
 basenet = BaseNet()
-basenet.load_state_dict(torch.load("neuralnet/weights.pth", map_location=torch.device("cpu")))
+basenet.load_state_dict(torch.load("backend/neuralnet/weights.pth", map_location=torch.device("cpu")))
 
 
 @app.route("/", methods=["GET"])  # заглавная страница проекта с сочной кнопкой перехода к анализам
