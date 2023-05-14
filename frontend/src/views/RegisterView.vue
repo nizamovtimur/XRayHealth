@@ -1,0 +1,84 @@
+<script setup>
+import AuthComponent from "../components/AuthComponent.vue";
+</script>
+
+<template>
+    <AuthComponent title="Регистрация">
+        <form id="form" @submit="onSubmit">
+            <input class="card-item" name="name" type="text" v-model="registerForm.name" required placeholder="Имя пользователя">
+            <input class="card-item" name="login" type="text" v-model="registerForm.login" required placeholder="Email">
+            <input class="card-item" name="password" type="text" v-model="registerForm.password" required placeholder="Пароль">
+            <button class="card-item">Регистрация</button>
+        </form>
+        <p>{{ message }}</p>
+    </AuthComponent>
+</template>
+
+<script>
+
+import axios from "axios";
+
+export default
+{
+    data() {
+        return {
+            registerForm: {
+              name: '',
+              login: '',
+              password: ''
+            },
+            message: '',
+        }
+    },
+    methods:{
+        register(user){
+            axios.post("http://localhost:5000/auth/register", user)
+                .catch((error) => {
+                    this.message = error.response.data.error;
+                });
+        },
+        initForm() {
+            this.registerForm.name = '';
+            this.registerForm.login = '';
+            this.registerForm.password = '';
+        },
+        onSubmit(evt) {
+            evt.preventDefault();
+            const payload = {
+                name: this.registerForm.name,
+                email: this.registerForm.login,
+                password: this.registerForm.password,
+            };
+            this.register(payload);
+            this.initForm();
+        },
+    }
+}
+</script>
+
+<style scoped>
+form
+{
+    display: grid;
+}
+
+.card-item
+{
+  margin: 5px 0;
+}
+
+button
+{
+  background-color: var(--vt-c-green-lighter);
+  color: var(--vt-c-black);
+  border: 1px solid var(--vt-c-divider-dark-1);
+  border-radius: 4px;
+  transition: 0.4s;
+}
+
+@media (hover: hover) {
+  button:hover {
+      background-color: hsla(160, 100%, 37%, 0.4);
+  }
+}
+</style>

@@ -7,8 +7,9 @@ import { RouterLink, RouterView } from 'vue-router'
         <div class="container">
             <img src="./assets/logo.svg" width="24" height="24" alt="logo">
             <nav>
-              <RouterLink to="/" class="nav-item">Главная</RouterLink>
-              <RouterLink to="/about" class="nav-item">About</RouterLink>
+                <RouterLink to="/" class="nav-item">Главная</RouterLink>
+                <RouterLink v-if="!isLoggedIn" to="/register" class="nav-item">Регистрация</RouterLink>
+                <RouterLink v-if="!isLoggedIn" to="/login" class="nav-item">Войти</RouterLink>
             </nav>
         </div>
     </header>
@@ -17,6 +18,28 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterView />
     </div>
 </template>
+
+<script>
+export default
+{
+    mounted() {
+        window.addEventListener('foo-key-localstorage-changed', (event) => {
+            this.token = event.detail.storage;
+        });
+        this.token = localStorage.getItem('user-token')
+    },
+    data() {
+        return {
+            token: null,
+        }
+    },
+    computed: {
+        isLoggedIn() {
+            return !!this.token
+        }
+    },
+}
+</script>
 
 <style scoped>
     .container
