@@ -42,7 +42,7 @@ Google Colab: https://colab.research.google.com/drive/1nEWmgYUlbLaJQUfXzh2ZbJTY4
 ```shell
 pip install -r requirements.txt 
 cp .env.example .env
-python app.py 
+python backend/app.py 
 ```
 
 Затем необходимо выполнить следующее:
