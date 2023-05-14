@@ -31,12 +31,15 @@ import AuthComponent from "../components/AuthComponent.vue";
                 new Promise ((resolve, reject) => {
                     axios.post("http://localhost:5000/auth/login", user)
                         .then(resp => {
-                            const token = resp.data.data.token
+                            const token = resp.data.data.token;
+                            const name = resp.data.data.name
                             localStorage.setItem('user-token', token) // store the token in localstorage
+                            localStorage.setItem('user-name', name)
 
-                            window.dispatchEvent(new CustomEvent('foo-key-localstorage-changed', {
+                            window.dispatchEvent(new CustomEvent('token-changed', {
                                 detail: {
-                                    storage: localStorage.getItem('user-token')
+                                    storage: localStorage.getItem('user-token'),
+                                    name: localStorage.getItem('user-name')
                                 }
                             }));
 

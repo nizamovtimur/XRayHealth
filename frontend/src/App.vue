@@ -10,6 +10,10 @@ import { RouterLink, RouterView } from 'vue-router'
                 <RouterLink to="/" class="nav-item">Главная</RouterLink>
                 <RouterLink v-if="!isLoggedIn" to="/register" class="nav-item">Регистрация</RouterLink>
                 <RouterLink v-if="!isLoggedIn" to="/login" class="nav-item">Войти</RouterLink>
+                <div v-if="isLoggedIn" class="auth-container">
+                    <p class="nav-item">{{ name }}</p>
+                    <a @click="logout" class="nav-item logout">Выйти</a>
+                </div>
             </nav>
         </div>
     </header>
@@ -23,14 +27,17 @@ import { RouterLink, RouterView } from 'vue-router'
 export default
 {
     mounted() {
-        window.addEventListener('foo-key-localstorage-changed', (event) => {
+        window.addEventListener('token-changed', (event) => {
             this.token = event.detail.storage;
+            this.name = event.detail.name;
         });
         this.token = localStorage.getItem('user-token')
+        this.name = localStorage.getItem('user-name')
     },
     data() {
         return {
             token: null,
+            name: null
         }
     },
     computed: {
@@ -38,6 +45,18 @@ export default
             return !!this.token
         }
     },
+    methods: {
+        logout() {
+            localStorage.removeItem('user-token')
+            localStorage.removeItem('user-name')
+            window.dispatchEvent(new CustomEvent('token-changed', {
+                detail: {
+                    storage: undefined,
+                    name: undefined
+                }
+            }));
+        }
+    }
 }
 </script>
 
@@ -47,6 +66,7 @@ export default
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         margin: 0 auto;
         max-width: var(--vp-screen-max-width);
     }
@@ -58,8 +78,20 @@ export default
         height: var(--vt-nav-height);
         align-items: center;
     }
+    nav
+    {
+        display: flex;
+    }
     .nav-item
     {
         padding: 12px;
+    }
+    .auth-container
+    {
+        display: flex;
+    }
+    .logout
+    {
+        cursor: pointer;
     }
 </style>
