@@ -48,7 +48,7 @@ python app.py
 Затем необходимо выполнить следующее:
 
 ```shell
-cd xrayhealth
+cd frontend
 npm install
 npm run dev
 ```
