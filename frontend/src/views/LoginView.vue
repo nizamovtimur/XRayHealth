@@ -82,18 +82,4 @@ form
     margin: 5px 0;
 }
 
-button
-{
-    background-color: var(--vt-c-green-lighter);
-    color: var(--vt-c-black);
-    border: 1px solid var(--vt-c-divider-dark-1);
-    border-radius: 4px;
-    transition: 0.4s;
-}
-
-@media (hover: hover) {
-    button:hover {
-        background-color: hsla(160, 100%, 37%, 0.4);
-    }
-}
 </style>

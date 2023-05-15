@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView.vue";
+import AnalyseView from "../views/AnalyseView.vue";
+import AnalysisView from "../views/AnalysisView.vue";
 
 const state = {
   token: localStorage.getItem('user-token') || '',
@@ -29,6 +31,11 @@ const ifAuthenticated = (to, from, next) => {
   next('/login')
 }
 
+export function updateState(){
+  state.token = localStorage.getItem('user-token') || '';
+  getters.isAuthenticated = !!state.token;
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -48,6 +55,18 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
       beforeEnter: ifNotAuthenticated,
+    },
+    {
+      path: '/analyzes',
+      name: 'analyzes',
+      component: AnalyseView,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/analyzes/:id',
+      name: 'analysis',
+      component: AnalysisView,
+      beforeEnter: ifAuthenticated
     },
     {
       path: '/about',

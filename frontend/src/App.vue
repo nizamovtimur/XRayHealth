@@ -4,15 +4,16 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
     <header>
-        <div class="container">
+        <div class="header-bar">
             <img src="./assets/logo.svg" width="24" height="24" alt="logo">
             <nav>
                 <RouterLink to="/" class="nav-item">Главная</RouterLink>
                 <RouterLink v-if="!isLoggedIn" to="/register" class="nav-item">Регистрация</RouterLink>
                 <RouterLink v-if="!isLoggedIn" to="/login" class="nav-item">Войти</RouterLink>
+                <RouterLink v-if="isLoggedIn" to="/analyzes" class="nav-item">Анализы</RouterLink>
                 <div v-if="isLoggedIn" class="auth-container">
                     <p class="nav-item">{{ name }}</p>
-                    <a @click="logout" class="nav-item logout">Выйти</a>
+                    <RouterLink to="/" @click="logout" class="nav-item logout">Выйти</RouterLink>
                 </div>
             </nav>
         </div>
@@ -24,12 +25,15 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <script>
+import { updateState } from "@/router";
+
 export default
 {
     mounted() {
         window.addEventListener('token-changed', (event) => {
             this.token = event.detail.storage;
             this.name = event.detail.name;
+            updateState()
         });
         this.token = localStorage.getItem('user-token')
         this.name = localStorage.getItem('user-name')
@@ -61,12 +65,17 @@ export default
 </script>
 
 <style scoped>
-    .container
+    .header-bar
     {
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin: 0 auto;
+        max-width: var(--vp-screen-max-width);
+    }
+    .container
+    {
         margin: 0 auto;
         max-width: var(--vp-screen-max-width);
     }

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="container">
+    <div class="container-auth">
         <h1>{{ title }}</h1>
         <div class="card">
             <slot></slot>
@@ -12,12 +12,12 @@
 </template>
 
 <style scoped>
-  .container
+  .container-auth
   {
       margin: 208px 0;
       display: grid;
       align-content: center;
-      justify-content: center;
+      justify-items: center;
   }
   .card
   {
