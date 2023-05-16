@@ -13,11 +13,11 @@ import PatientComponent from "@/components/PatientComponent.vue";
         <table>
             <tr>
                 <th>№ п/п</th>
-                <th>Результат анализа</th>
-                <th>Дата</th>
-                <th>Идентификатор пациента</th>
+                <th @click="sort('prediction')" class="row">Результат анализа <button v-if="currentSort === 'prediction'" @click="changeSortDir">{{ this.currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
+                <th @click="sort('date')" class="row">Дата <button v-if="currentSort === 'date'" @click="changeSortDir">{{ this.currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
+                <th @click="sort('patient_id')" class="row">Идентификатор пациента <button v-if="currentSort === 'patient_id'" @click="changeSortDir">{{ this.currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
             </tr>
-            <tr v-for="(patient, index) in patients" class="row" @click="getRow">
+            <tr v-for="(patient, index) in sortedPatients" class="row" @click="getRow">
                 <td>{{ index + 1 }}</td>
                 <td>{{ patient.prediction }}</td>
                 <td>{{ patient.date }}</td>
@@ -45,6 +45,8 @@ export default
     data() {
         return {
             patients: [],
+            currentSort:'date',
+            currentSortDir:'asc',
             selectedPatient: ['', '', '', '', ''],
             analysisForm: {
                 patient_id: '',
@@ -77,6 +79,16 @@ export default
                 this.$router.push('/analyzes');
                 this.getAnalyzes(); // TODO: WORST PRACTISES => REPLACE LATER
             })
+        },
+        sort:function(s) {
+            //if s == current sort, reverse
+            // if(s === this.currentSort) {
+            //     this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+            // }
+            this.currentSort = s;
+        },
+        changeSortDir:function() {
+            this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
         },
         getRow(event) {
             this.selectedPatient = [
@@ -143,6 +155,17 @@ export default
         this.getAnalyzes();
 
         this.modal = document.getElementById("modal")
+    },
+    computed:{
+        sortedPatients:function() {
+            return this.patients.sort((a,b) => {
+                let modifier = 1;
+                if(this.currentSortDir === 'desc') modifier = -1;
+                if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+                if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+                return 0;
+            });
+        }
     }
 }
 </script>
