@@ -3,11 +3,22 @@ import PatientComponent from "@/components/PatientComponent.vue";
 </script>
 
 <template>
-    <form type="multipart/form-data" class="form-container">
-        <input type="text" name="patient_id" v-model="analysisForm.patient_id" class="input-element" placeholder="Идентификатор пациента">
-        <input type="file" name="image" v-on:change="changeFile" class="input-element" alt="image-input">
-        <button @click="onSubmit" class="input-element">Создать анализ</button>
-    </form>
+    <button @click="openCreateModal" class="big-button">Создать анализ</button>
+    <dialog id="createModal">
+        <form type="multipart/form-data" class="form-container">
+          <input type="text" name="patient_id" v-model="analysisForm.patient_id" class="input-element border-round cool-padding" placeholder="Идентификатор пациента">
+          <input type="file" name="image" v-on:change="changeFile" class="input-element" alt="image-input">
+          <div class="button-div input-element">
+            <button formmethod="dialog" type="submit" style="background-color: #ff9595" class="cool-padding">Отмена</button>
+            <button @click="onSubmit" class="cool-padding">Создать анализ</button>
+          </div>
+        </form>
+        <hr>
+        <details class="input-element">
+          <summary style="cursor: pointer">Токен для доступа сторонних приложений</summary>
+          <input :value="getToken" class="border-round" style="width: 100%">
+        </details>
+    </dialog>
     <div>{{ msg }}</div>
     <div>
         <table>
@@ -15,7 +26,16 @@ import PatientComponent from "@/components/PatientComponent.vue";
                 <th>№ п/п</th>
                 <th @click="sort('prediction')" class="row">Результат анализа <button v-if="currentSort === 'prediction'" @click="changeSortDir">{{ this.currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
                 <th @click="sort('date')" class="row">Дата <button v-if="currentSort === 'date'" @click="changeSortDir">{{ this.currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
-                <th @click="sort('patient_id')" class="row">Идентификатор пациента <button v-if="currentSort === 'patient_id'" @click="changeSortDir">{{ this.currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
+                <th @click="sort('patient_id')" class="row">
+                    Идентификатор пациента
+                    <button v-if="currentSort === 'patient_id'" @click="changeSortDir" style="margin: 0 4px">
+                        {{ this.currentSortDir === 'asc' ? '▼' : '▲'}}
+                    </button>
+                    <select @change="filterPatient($event)" v-on:click.prevent.stop>
+                      <option selected>Все</option>
+                      <option v-for="id in patientsIds"> {{ id }} </option>
+                    </select>
+                </th>
             </tr>
             <tr v-for="(patient, index) in sortedPatients" class="row" @click="getRow">
                 <td>{{ index + 1 }}</td>
@@ -30,7 +50,7 @@ import PatientComponent from "@/components/PatientComponent.vue";
             <PatientComponent :diagnosis="selectedPatient[1]" :date="selectedPatient[2]"
                               :title="selectedPatient[3]" :img="selectedPatient[4]"
                               :id="selectedPatient[5]">
-                <button @click="deletePatient" class="delete-button">Удалить</button>
+                <button @click="deletePatient" class="delete-button" style="padding: 0 12px">Удалить</button>
             </PatientComponent>
         </dialog>
     </div>
@@ -46,6 +66,7 @@ export default
         return {
             patients: [],
             currentSort:'date',
+            filteredPatients: [],
             currentSortDir:'asc',
             selectedPatient: ['', '', '', '', ''],
             analysisForm: {
@@ -54,6 +75,7 @@ export default
             },
             analysisId: '',
             modal: '',
+            createModal: '',
             msg: '',
         }
     },
@@ -81,10 +103,6 @@ export default
             })
         },
         sort:function(s) {
-            //if s == current sort, reverse
-            // if(s === this.currentSort) {
-            //     this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
-            // }
             this.currentSort = s;
         },
         changeSortDir:function() {
@@ -100,6 +118,9 @@ export default
                 event.target.closest("tr").childNodes[5].innerText,
                 ]
             modal.showModal()
+        },
+        openCreateModal() {
+            createModal.showModal()
         },
         closeModal(e) {
             const dialogDimensions = modal.getBoundingClientRect()
@@ -150,21 +171,47 @@ export default
             this.createAnalysis(formData);
             this.initForm();
         },
+        filterPatient(event) {
+            this.filteredPatients = this.patients.filter(patient => patient.patient_id === event.target.value);
+        },
     },
     created() {
         this.getAnalyzes();
 
         this.modal = document.getElementById("modal")
+        this.createModal = document.getElementById("createModal")
     },
     computed:{
+        filteredPatients:function() {
+          return this.filteredPatients
+        },
         sortedPatients:function() {
-            return this.patients.sort((a,b) => {
-                let modifier = 1;
-                if(this.currentSortDir === 'desc') modifier = -1;
-                if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-                if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-                return 0;
-            });
+            if (this.filteredPatients === undefined || this.filteredPatients.length == 0)
+            {
+                return this.patients.sort((a,b) => {
+                  let modifier = 1;
+                  if(this.currentSortDir === 'desc') modifier = -1;
+                  if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+                  if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+                  return 0;
+                });
+            }
+            else
+            {
+                return this.filteredPatients.sort((a,b) => {
+                  let modifier = 1;
+                  if(this.currentSortDir === 'desc') modifier = -1;
+                  if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+                  if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+                  return 0;
+                });
+            }
+        },
+        patientsIds:function () {
+            return [...new Set(this.patients.map(patient => patient.patient_id).sort())];
+        },
+        getToken:function () {
+            return localStorage.getItem('user-token');
         }
     }
 }
@@ -173,9 +220,6 @@ export default
 <style scoped>
     .form-container {
         display: grid;
-        //justify-items: center;
-        margin: 24px 0;
-        width: 250px;
     }
     dialog {
         top: 50%;
@@ -183,6 +227,25 @@ export default
         translate: -50% -50%;
         border-radius: 4px;
         border: 2px solid var(--vt-c-green);
+        padding: 20px;
+    }
+    .button-div {
+        display: flex;
+        justify-content: space-between;
+    }
+    .big-button {
+        padding: 12px 24px;
+        margin: 12px 0;
+    }
+    .border-round {
+        border-radius: 2px;
+        border: 1px solid black;
+    }
+    input[type=file]::file-selector-button {
+        padding: 6px 12px;
+    }
+    .cool-padding {
+        padding: 6px 12px;
     }
     .delete-button {
         color: white;

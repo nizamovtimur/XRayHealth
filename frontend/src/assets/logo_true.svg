@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   viewBox="0 0 2066.8711 527.94336"
+   viewBox="0 0 2041.478 453.37601"
    version="1.1"
    id="svg838"
    sodipodi:docname="logo_true.svg"
    inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
-   width="2066.8713"
-   height="527.94336"
+   width="2041.4783"
+   height="453.37601"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -22,9 +22,9 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="0.31504603"
-     inkscape:cx="774.49"
-     inkscape:cy="292.02082"
+     inkscape:zoom="0.32"
+     inkscape:cx="831.25"
+     inkscape:cy="315.625"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -55,12 +55,12 @@
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:379.598px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.97706"
-     x="261.37137"
-     y="451.57889"
+     x="235.97826"
+     y="374.90814"
      id="text1655"><tspan
        sodipodi:role="line"
        id="tspan1653"
-       x="261.37137"
-       y="451.57889"
+       x="235.97826"
+       y="374.90814"
        style="stroke-width:1.97706">rayHealth</tspan></text>
 </svg>

@@ -4,26 +4,17 @@ defineProps(['title', 'date', 'diagnosis', 'img', 'id'])
 
 <template>
     <div class="card">
-        <h1>Пациент №{{ title }}</h1>
         <img :src="img" alt="photo">
         <div class="card-body">
             <div class="card-text">
-                <p>Я предполагаю, что здесь - <span>{{ diagnosis }}</span></p>
+                <p>Пациент: {{ title }}</p>
+                <p>Результат анализа: <span>{{ diagnosis }}</span></p>
                 <p class="float-left">{{ date }}</p>
             </div>
             <slot></slot>
         </div>
     </div>
 </template>
-
-<script>
-import axios from "axios";
-
-export default {
-    methods: {
-    }
-}
-</script>
 
 <style scoped>
 .card{
