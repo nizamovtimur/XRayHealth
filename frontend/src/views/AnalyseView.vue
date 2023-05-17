@@ -9,8 +9,8 @@ import PatientComponent from "@/components/PatientComponent.vue";
           <input type="text" name="patient_id" v-model="analysisForm.patient_id" class="input-element border-round cool-padding" placeholder="Идентификатор пациента">
           <input type="file" name="image" v-on:change="changeFile" class="input-element" alt="image-input">
           <div class="button-div input-element">
-            <button formmethod="dialog" type="submit" style="background-color: #ff9595" class="cool-padding">Отмена</button>
-            <button @click="onSubmit" class="cool-padding">Создать анализ</button>
+            <button formmethod="dialog" type="submit" style="background-color: var(--vt-c-text-red-light); color: white" class="cool-padding">Отмена</button>
+            <button @click="onSubmit" class="cool-padding submit-button">Создать анализ</button>
           </div>
         </form>
         <hr>
@@ -137,6 +137,8 @@ export default
             this.analysisForm.image = event.target.files[0];
         },
         createAnalysis(analysis) {
+            createModal.close()
+
             new Promise ((resolve, reject) => {
                 axios.post("http://localhost:5000/analyzes/predict", analysis, {headers: {Authorization: "Bearer " + localStorage.getItem('user-token'),}})
                     .then(resp => {
@@ -234,8 +236,12 @@ export default
         justify-content: space-between;
     }
     .big-button {
-        padding: 12px 24px;
         margin: 12px 0;
+        background-color: var(--vt-c-green);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 4px;
+        font-size: 18px;
     }
     .border-round {
         border-radius: 2px;
@@ -280,5 +286,8 @@ export default
     }
     .input-element {
         margin: 12px 0;
+    }
+    .big-button:hover {
+      background-color: #008c49;
     }
 </style>

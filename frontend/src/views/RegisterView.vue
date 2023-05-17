@@ -7,8 +7,8 @@ import AuthComponent from "../components/AuthComponent.vue";
         <form id="form" @submit="onSubmit">
             <input class="card-item" name="name" type="text" v-model="registerForm.name" required placeholder="Имя пользователя">
             <input class="card-item" name="login" type="text" v-model="registerForm.login" required placeholder="Email">
-            <input class="card-item" name="password" type="text" v-model="registerForm.password" required placeholder="Пароль">
-            <button class="card-item">Регистрация</button>
+            <input class="card-item" name="password" type="password" v-model="registerForm.password" required placeholder="Пароль">
+            <button class="card-item submit-button">Регистрация</button>
         </form>
         <p>{{ message }}</p>
     </AuthComponent>
@@ -33,6 +33,9 @@ export default
     methods:{
         register(user){
             axios.post("http://localhost:5000/auth/register", user)
+                .then(resp => {
+                    this.$router.push('/login')
+                })
                 .catch((error) => {
                     this.message = error.response.data.error;
                 });
@@ -61,7 +64,9 @@ form
 {
     display: grid;
 }
-
+input {
+  padding: 12px 12px;
+}
 .card-item
 {
   margin: 5px 0;

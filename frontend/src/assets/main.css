@@ -34,5 +34,14 @@ button
     background-color: hsla(160, 100%, 37%, 0.4);
   }
 }
+.submit-button {
+  background-color: var(--vt-c-green);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+}
+.submit-button:hover {
+  background-color: #008c49;
+}
 
 
