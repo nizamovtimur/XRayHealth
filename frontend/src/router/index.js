@@ -3,7 +3,6 @@ import HomeView from '../views/HomeView.vue'
 import RegisterView from "../views/RegisterView.vue";
 import LoginView from "../views/LoginView.vue";
 import AnalyseView from "../views/AnalyseView.vue";
-import AnalysisView from "../views/AnalysisView.vue";
 
 const state = {
   token: localStorage.getItem('user-token') || '',
@@ -62,12 +61,6 @@ const router = createRouter({
       component: AnalyseView,
       beforeEnter: ifAuthenticated
     },
-    {
-      path: '/analyzes/:id',
-      name: 'analysis',
-      component: AnalysisView,
-      beforeEnter: ifAuthenticated
-    }
   ]
 })
 
