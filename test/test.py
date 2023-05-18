@@ -3,7 +3,7 @@
 import requests
 from timeit import default_timer as timer
 
-host = "http://localhost:5000"
+host = "https://xrayhealth.moad.dev"
 
 
 def predict(token: str, file_path: str):
