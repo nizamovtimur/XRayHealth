@@ -3,7 +3,7 @@
 import requests
 from timeit import default_timer as timer
 
-host = "https://xrayhealth.moad.dev"
+host = "https://xrayhealth.moad.dev/api"
 
 
 def predict(token: str, file_path: str):

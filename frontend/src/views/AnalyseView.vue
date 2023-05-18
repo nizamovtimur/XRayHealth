@@ -13,11 +13,6 @@ import PatientComponent from "@/components/PatientComponent.vue";
             <button @click="onSubmit" class="cool-padding submit-button">Создать анализ</button>
           </div>
         </form>
-        <hr>
-        <details class="input-element">
-          <summary style="cursor: pointer">Токен для доступа сторонних приложений</summary>
-          <input :value="getToken" class="border-round" style="width: 100%">
-        </details>
     </dialog>
     <div>{{ msg }}</div>
     <div>
@@ -211,9 +206,6 @@ export default
         },
         patientsIds:function () {
             return [...new Set(this.patients.map(patient => patient.patient_id).sort())];
-        },
-        getToken:function () {
-            return localStorage.getItem('user-token');
         }
     }
 }
