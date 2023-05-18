@@ -81,14 +81,14 @@ export default
     },
     methods: {
         getAnalyzes() {
-            axios.get("http://localhost:5000/analyzes", {headers: {Authorization: "Bearer " + localStorage.getItem('user-token')}})
+            axios.get("/api/analyzes", {headers: {Authorization: "Bearer " + localStorage.getItem('user-token')}})
                 .then((res) => {
                     this.patients = res.data.data;
             })
         },
         deletePatient() {
             new Promise ((resolve, reject) => {
-            axios.delete('http://localhost:5000/analyzes/' + this.selectedPatient[5], {headers: {Authorization: "Bearer " + localStorage.getItem('user-token')}})
+            axios.delete('/api/analyzes/' + this.selectedPatient[5], {headers: {Authorization: "Bearer " + localStorage.getItem('user-token')}})
                 .then(resp => {
                     modal.close()
                     resolve(resp)
@@ -140,7 +140,7 @@ export default
             createModal.close()
 
             new Promise ((resolve, reject) => {
-                axios.post("http://localhost:5000/analyzes/predict", analysis, {headers: {Authorization: "Bearer " + localStorage.getItem('user-token'),}})
+                axios.post("/api/analyzes/predict", analysis, {headers: {Authorization: "Bearer " + localStorage.getItem('user-token'),}})
                     .then(resp => {
                         this.analysisId = resp.data.data._id
                         store.result = { // redundant if use modal

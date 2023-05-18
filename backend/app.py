@@ -17,27 +17,13 @@ from validate import validate_analyze, validate_email_and_password, validate_use
 app = Flask(__name__)
 app.config.from_object(Config)
 
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app, resources={r'/api/*': {'origins': '*'}})
 
 basenet = BaseNet()
-basenet.load_state_dict(torch.load("backend/neuralnet/weights.pth", map_location=torch.device("cpu")))
+basenet.load_state_dict(torch.load("neuralnet/weights.pth", map_location=torch.device("cpu")))
 
 
-@app.route("/", methods=["GET"])  # заглавная страница проекта с сочной кнопкой перехода к анализам
-def index():
-    return jsonify({
-        "message": "Hello world",
-        "data": "pong"
-    }), 200
-
-
-@app.route("/api", methods=["GET"])  # страница описания подключения аппаратного комплекса с токеном доступа
-@token_required
-def personal(current_user):
-    pass
-
-
-@app.route("/analyzes", methods=["GET"])  # список всех анализов всех пользователей
+@app.route("/api/analyzes", methods=["GET"])  # список всех анализов всех пользователей
 @token_required
 def get_analyzes(current_user):
     try:
@@ -54,7 +40,7 @@ def get_analyzes(current_user):
         }), 500
 
 
-@app.route("/analyzes/predict", methods=["POST"])  # создание анализа с предсказанием через api с проверкой токена
+@app.route("/api/analyzes/predict", methods=["POST"])  # создание анализа с предсказанием через api с проверкой токена
 @token_required
 def predict(current_user):
     try:
@@ -102,7 +88,7 @@ def predict(current_user):
         }), 500
 
 
-@app.route("/analyzes/<analysis_id>", methods=["GET", "DELETE"])  # страница просмотра анализа GET и его удаления DELETE
+@app.route("/api/analyzes/<analysis_id>", methods=["GET", "DELETE"])  # страница просмотра анализа GET и его удаления DELETE
 @token_required
 def get_analysis(current_user, analysis_id=""):
     print(analysis_id)
@@ -145,7 +131,7 @@ def get_analysis(current_user, analysis_id=""):
             }), 500
 
 
-@app.route("/auth/login", methods=["POST"])  # логин
+@app.route("/api/auth/login", methods=["POST"])  # логин
 def login():
     try:
         data = request.json
@@ -191,7 +177,7 @@ def login():
         }, 500
 
 
-@app.route("/auth/register", methods=["POST"])  # регистрация
+@app.route("/api/auth/register", methods=["POST"])  # регистрация
 def register():
     try:
         user = request.json

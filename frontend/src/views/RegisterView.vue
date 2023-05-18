@@ -32,7 +32,7 @@ export default
     },
     methods:{
         register(user){
-            axios.post("http://localhost:5000/auth/register", user)
+            axios.post("/api/auth/register", user)
                 .then(resp => {
                     this.$router.push('/login')
                 })

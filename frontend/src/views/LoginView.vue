@@ -29,7 +29,7 @@ import AuthComponent from "../components/AuthComponent.vue";
         methods: {
             login(user){
                 new Promise ((resolve, reject) => {
-                    axios.post("http://localhost:5000/auth/login", user)
+                    axios.post("/api/auth/login", user)
                         .then(resp => {
                             const token = resp.data.data.token;
                             const name = resp.data.data.name
