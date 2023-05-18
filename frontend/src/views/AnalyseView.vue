@@ -2,7 +2,7 @@
 import PatientComponent from "@/components/PatientComponent.vue";
 </script>
 
-<template v-if="this">
+<template>
     <button @click="openCreateModal" class="big-button">Создать анализ</button>
     <dialog id="createModal">
         <form type="multipart/form-data" class="form-container">
@@ -19,12 +19,12 @@ import PatientComponent from "@/components/PatientComponent.vue";
         <table>
             <tr>
                 <th>№ п/п</th>
-                <th @click="sort('prediction')" class="row">Результат анализа <button v-if="currentSort === 'prediction'" @click="changeSortDir">{{ this.currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
-                <th @click="sort('date')" class="row">Дата <button v-if="currentSort === 'date'" @click="changeSortDir">{{ this.currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
+                <th @click="sort('prediction')" class="row">Результат анализа <button v-if="currentSort === 'prediction'" @click="changeSortDir">{{ currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
+                <th @click="sort('date')" class="row">Дата <button v-if="currentSort === 'date'" @click="changeSortDir">{{ currentSortDir === 'asc' ? '▼' : '▲'}}</button></th>
                 <th @click="sort('patient_id')" class="row">
                     Идентификатор пациента
                     <button v-if="currentSort === 'patient_id'" @click="changeSortDir" style="margin: 0 4px">
-                        {{ this.currentSortDir === 'asc' ? '▼' : '▲'}}
+                        {{ currentSortDir === 'asc' ? '▼' : '▲'}}
                     </button>
                     <select @change="filterPatient($event)" v-on:click.prevent.stop>
                       <option selected>Все</option>
