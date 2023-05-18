@@ -2,7 +2,7 @@
 import PatientComponent from "@/components/PatientComponent.vue";
 </script>
 
-<template>
+<template v-if="this">
     <button @click="openCreateModal" class="big-button">Создать анализ</button>
     <dialog id="createModal">
         <form type="multipart/form-data" class="form-container">
